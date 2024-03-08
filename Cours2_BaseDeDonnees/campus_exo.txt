@@ -1,0 +1,125 @@
+1. Lister l'ensemble des étudiants avec nom, prénom et email.
+
+SELECT * FROM student;
+
+======================================================================
+
+2. Trouver le nom et prénom de l'étudiant ayant l'ID 5.
+
+SELECT * FROM student WHERE department_id = "5";
+
+======================================================================
+
+
+3. Lister tous les étudiants dont le nom commence par la lettre "C".
+
+SELECT * FROM student WHERE surname LIKE "c%";
+
+======================================================================
+
+4. Lister les étudiants dont le prénom est "Jean" ou "Marie".
+
+SELECT * FROM student WHERE name = "Jean" OR name = "Marie";
+
+======================================================================
+
+5. Lister tous les logements occupés par des étudiants du département "Faculté des Arts".
+
+
+SELECT accomodation.* FROM accommodation 
+JOIN student ON accommodation.student_id = student.id
+JOIN department ON student.departmnet.id = department.id             
+WHERE department.name = "Faculté des Arts";
+
+======================================================================
+
+6. Lister tous les étudiants par ordre alphabétique de leur nom de famille, et par prénom en ordre décroissant.
+
+SELECT * FROM student ORDER BY student.surname ASC, student.name DESC;
+
+======================================================================
+
+7. Trouver les étudiants qui n'ont pas de logement attribué.
+
+SELECT * FROM student LEFT JOIN accommodation ON student.id = accommodation.student_id WHERE accommodation.student_id IS NULL;
+
+======================================================================
+
+8. Lister les activités se déroulant dans le "Bâtiment A", triées par date croissante.
+
+SELECT * FROM activity WHERE place = "Bâtiment A" ORDER BY name ASC;
+
+======================================================================
+
+9. Afficher le nombre total d'étudiants inscrits dans chaque département.
+
+SELECT department.name, COUNT(department.name) as totalStudent FROM department
+JOIN student ON student.department_id = department.id
+GROUP BY department.name;
+
+======================================================================
+
+10. Lister les étudiants et les activités auxquelles ils participent.
+
+SELECT student.name, student.surname, activity.name FROM student
+JOIN activity_student ON student.id = activity_student.id
+JOIN activity ON activity.id = activity_student.activity_id;
+
+======================================================================
+
+11. Trouver le loyer moyen des logements du campus.
+
+SELECT AVG(accommodation.rent) as averageRent FROM accommodation;
+
+======================================================================
+
+12. Donner la liste des étudiants et le nombre d'activités auxquelles ils participent, triée par le nombre d'activités décroissant.
+
+SELECT student.name, student.surname, activity.name, activity.id, COUNT(activity.id) FROM student
+JOIN activity_student ON activity_student.student_id = student.id
+JOIN activity ON activity_student.activity_id = activity.id
+GROUP BY activity.name
+ORDER BY activity.name ASC;
+
+======================================================================
+
+**Create**
+
+1. Imaginez et créez le département de vos rêves dans lequel vous aimeriez travailler (Il a besoin de sa spécialité ?).
+
+INSERT INTO department (name, speciality_id) VALUES ('Faculté des Artistes', 3);
+
+======================================================================
+
+2. Créez étudiant qui vous représente, et qui serait rattaché au département que vous avez précédemment imaginé.
+
+======================================================================
+
+**Update**
+
+1. Actualisez l'adresse email de l'étudiant avec l'identifiant 4, le nouvel email est : "s.martin@simplon.co".
+
+UPDATE student 
+SET email = "s.martin@simplon.co" 
+WHERE student.id = "4";
+
+======================================================================
+
+2. Modifiez la date de l'événement prévu dans le Bâtiment S.
+
+UPDATE activity 
+SET date = "1952/12/31" 
+WHERE activity.place = "Bâtiment S";
+
+======================================================================
+
+**Delete**
+
+1. Supprimez le département Faculté des Arts (cette action pourrait nécessiter la suppression d'autres éléments en préalable !).
+
+DELETE FROM department
+WHERE department.name = "Faculté des Arts";
+
+
+
+
